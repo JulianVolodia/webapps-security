@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DatabaseModel VersionId="2.1">
+    <ModelGid>none</ModelGid>
+    <ModelVersionGid>none</ModelVersionGid>
+    <Counters>
+        <Counter>
+            <Name>table</Name>
+            <Value>4</Value>
+            <Prefix>t</Prefix>
+        </Counter>
+        <Counter>
+            <Name>column</Name>
+            <Value>17</Value>
+            <Prefix>c</Prefix>
+        </Counter>
+        <Counter>
+            <Name>index</Name>
+            <Value>2</Value>
+            <Prefix>i</Prefix>
+        </Counter>
+        <Counter>
+            <Name>reference</Name>
+            <Value>5</Value>
+            <Prefix>r</Prefix>
+        </Counter>
+        <Counter>
+            <Name>table_check</Name>
+            <Value>0</Value>
+            <Prefix>tc</Prefix>
+        </Counter>
+        <Counter>
+            <Name>alternate_key</Name>
+            <Value>1</Value>
+            <Prefix>a</Prefix>
+        </Counter>
+        <Counter>
+            <Name>sequence</Name>
+            <Value>4</Value>
+            <Prefix>s</Prefix>
+        </Counter>
+        <Counter>
+            <Name>note</Name>
+            <Value>1</Value>
+            <Prefix>n</Prefix>
+        </Counter>
+        <Counter>
+            <Name>view</Name>
+            <Value>4</Value>
+            <Prefix>v</Prefix>
+        </Counter>
+        <Counter>
+            <Name>view_column</Name>
+            <Value>53</Value>
+            <Prefix>vc</Prefix>
+        </Counter>
+        <Counter>
+            <Name>area</Name>
+            <Value>0</Value>
+            <Prefix>ar</Prefix>
+        </Counter>
+        <Counter>
+            <Name>text</Name>
+            <Value>0</Value>
+            <Prefix>tx</Prefix>
+        </Counter>
+        <Counter>
+            <Name>tableDisplay</Name>
+            <Value>4</Value>
+            <Prefix>td</Prefix>
+        </Counter>
+        <Counter>
+            <Name>viewDisplay</Name>
+            <Value>4</Value>
+            <Prefix>vd</Prefix>
+        </Counter>
+        <Counter>
+            <Name>referenceDisplay</Name>
+            <Value>5</Value>
+            <Prefix>rd</Prefix>
+        </Counter>
+    </Counters>
+    <AdditionalSQLBeforeCreate></AdditionalSQLBeforeCreate>
+    <AdditionalSQLAfterCreate>-- TEST DATA
+
+insert into user_account (id, login, password, full_name, creation_ts) values (1, 'mkolodziejski', 'qwerty', 'Michał Kołodziejski', NOW());
+insert into user_account (id, login, password, full_name, creation_ts) values (2, 'abacki', 'qwerty', 'Adam Abacki', NOW());
+insert into user_account (id, login, password, full_name, creation_ts) values (3, 'babacki', 'qwerty', 'Bartek Babacki', NOW());
+insert into user_account (id, login, password, full_name, creation_ts) values (4, 'cabacki', 'qwerty', 'Czarek Cabacki', NOW());
+
+insert into users_connection (user_account_1_id, user_account_2_id) values (1, 2);
+insert into users_connection (user_account_1_id, user_account_2_id) values (3, 1);
+insert into users_connection (user_account_1_id, user_account_2_id) values (4, 1);
+insert into users_connection (user_account_1_id, user_account_2_id) values (2, 3);
+
+insert into post_message (id, user_account_id, content, insert_ts) values (1, 1, 'Michała pierwszy post', NOW());
+insert into post_message (id, user_account_id, content, insert_ts) values (2, 2, 'Adam pisze', NOW());
+insert into post_message (id, user_account_id, content, insert_ts) values (3, 3, 'Bartosz napisał', NOW());
+insert into post_message (id, user_account_id, content, insert_ts) values (4, 4, 'Cezarego post pierwszy', NOW());
+
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (1, 1, 2, 'Hello', 'Jeden od Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (2, 1, 2, 'Re: Hello', 'Dwa od Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (3, 2, 1, 'Re: Re: Hello', 'Trzy od Adama do Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (4, 1, 2, 'Re: Re: Re: Hello', 'Cztery od Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (5, 3, 1, 'Testowa', 'Pierwsza od Bartka do Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (6, 1, 3, 'Re: Testowa', 'Druga od Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (7, 3, 1, 'Re: Re: Testowa', 'Trzecia od Bartka do Michała', NOW());
+insert into private_message (id, sender_id, recipient_id, subject, content, insert_ts) values (8, 2, 3, 'PRIVATE', 'Od Adama do Bartka', NOW());
+
+-- END OF TEST DATA</AdditionalSQLAfterCreate>
+    <AdditionalSQLBeforeDrop>-- DELETE DATA
+
+delete from post_message;
+delete from private_message;
+delete from users_connection;
+delete from user_account;
+
+</AdditionalSQLBeforeDrop>
+    <AdditionalSQLAfterDrop></AdditionalSQLAfterDrop>
+    <Tables>
+        <Table Id="t1">
+            <Name>user_account</Name>
+            <Description></Description>
+            <Columns>
+                <Column Id="c1">
+                    <Name>id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>true</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c2">
+                    <Name>login</Name>
+                    <Type>varchar(100)</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c3">
+                    <Name>password</Name>
+                    <Type>varchar(100)</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c4">
+                    <Name>full_name</Name>
+                    <Type>varchar(100)</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c16">
+                    <Name>creation_ts</Name>
+                    <Type>timestamp</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+            </Columns>
+            <AlternateKeys>
+                <AlternateKey Id="a1">
+                    <Name>login_ak</Name>
+                    <Columns>
+                        <Column>c2</Column>
+                    </Columns>
+                    <Properties/>
+                </AlternateKey>
+            </AlternateKeys>
+            <Indexes/>
+            <TableChecks/>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Table>
+        <Table Id="t2">
+            <Name>users_connection</Name>
+            <Description></Description>
+            <Columns>
+                <Column Id="c5">
+                    <Name>user_account_1_id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>true</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c6">
+                    <Name>user_account_2_id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>true</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+            </Columns>
+            <AlternateKeys/>
+            <Indexes>
+                <Index Id="i1">
+                    <Name>reverse_pk_idx</Name>
+                    <Columns>
+                        <Column>c6</Column>
+                        <Ascending>true</Ascending>
+                    </Columns>
+                    <Columns>
+                        <Column>c5</Column>
+                        <Ascending>true</Ascending>
+                    </Columns>
+                    <Properties/>
+                </Index>
+            </Indexes>
+            <TableChecks/>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Table>
+        <Table Id="t3">
+            <Name>private_message</Name>
+            <Description></Description>
+            <Columns>
+                <Column Id="c7">
+                    <Name>id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>true</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c9">
+                    <Name>sender_id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c10">
+                    <Name>recipient_id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c17">
+                    <Name>subject</Name>
+                    <Type>varchar(100)</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c8">
+                    <Name>content</Name>
+                    <Type>varchar(1000)</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c14">
+                    <Name>insert_ts</Name>
+                    <Type>timestamp</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+            </Columns>
+            <AlternateKeys/>
+            <Indexes/>
+            <TableChecks/>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Table>
+        <Table Id="t4">
+            <Name>post_message</Name>
+            <Description></Description>
+            <Columns>
+                <Column Id="c11">
+                    <Name>id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>true</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c13">
+                    <Name>user_account_id</Name>
+                    <Type>int</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c12">
+                    <Name>content</Name>
+                    <Type>varchar(1000)</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+                <Column Id="c15">
+                    <Name>insert_ts</Name>
+                    <Type>timestamp</Type>
+                    <Description>describe me please</Description>
+                    <Nullable>false</Nullable>
+                    <PK>false</PK>
+                    <DefaultValue></DefaultValue>
+                    <CheckExpression></CheckExpression>
+                    <Properties/>
+                </Column>
+            </Columns>
+            <AlternateKeys/>
+            <Indexes/>
+            <TableChecks/>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Table>
+    </Tables>
+    <Views>
+        <View Id="v1">
+            <Name>wall_posts_view</Name>
+            <Description></Description>
+            <SQLQuery>select
+  pm.id as post_id,
+  pm.user_account_id as post_user_id,
+  pm.content as post_content,
+  pm.insert_ts as post_insert_ts,
+  ucv.connected_user_full_name as post_user_full_name,
+  ucv.user_account_id as wall_user_id
+
+from post_message pm
+  join user_connections_view ucv
+    on (pm.user_account_id = ucv.connected_user_id)
+
+union all
+select
+  pm.id as post_id,
+  pm.user_account_id as post_user_id,
+  pm.content as post_content,
+  pm.insert_ts as post_insert_ts,
+  ua.full_name as post_user_full_name,
+  ua.id as wall_user_id
+
+from post_message pm
+  join user_account ua
+    on (pm.user_account_id = ua.id);
+  </SQLQuery>
+            <ViewColumns>
+                <ViewColumn Id="vc23">
+                    <Name>post_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc24">
+                    <Name>post_user_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc25">
+                    <Name>post_content</Name>
+                    <Type>varchar(1000)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc26">
+                    <Name>post_insert_ts</Name>
+                    <Type>timestamp</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc27">
+                    <Name>post_user_full_name</Name>
+                    <Type>varchar(100)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc28">
+                    <Name>wall_user_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+            </ViewColumns>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Dependencies>
+                <View>v2</View>
+            </Dependencies>
+            <Properties/>
+        </View>
+        <View Id="v2">
+            <Name>user_connections_view</Name>
+            <Description></Description>
+            <SQLQuery>select
+  uc.user_account_1_id as user_account_id,
+  uc.user_account_2_id as connected_user_id,
+  ua.full_name as connected_user_full_name
+from users_connection uc
+join user_account ua on (ua.id = uc.user_account_2_id)
+
+union all
+
+select
+  uc.user_account_2_id as user_account_id,
+  uc.user_account_1_id as connected_user_id,
+  ua.full_name as connected_user_full_name
+from users_connection uc
+join user_account ua on (ua.id = uc.user_account_1_id);
+</SQLQuery>
+            <ViewColumns>
+                <ViewColumn Id="vc8">
+                    <Name>user_account_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc9">
+                    <Name>connected_user_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc10">
+                    <Name>connected_user_full_name</Name>
+                    <Type>varchar(100)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+            </ViewColumns>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </View>
+        <View Id="v4">
+            <Name>private_message_view</Name>
+            <Description></Description>
+            <SQLQuery>select
+  pm.id,
+  pm.sender_id,
+  uas.full_name as sender_full_name,
+  pm.recipient_id,
+  uar.full_name as recipient_full_name,
+  pm.subject,
+  pm.content,
+  pm.insert_ts
+  
+from
+  private_message pm
+  join user_account uas on (pm.sender_id = uas.id)
+  join user_account uar on (pm.recipient_id = uar.id);</SQLQuery>
+            <ViewColumns>
+                <ViewColumn Id="vc46">
+                    <Name>id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc47">
+                    <Name>sender_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc48">
+                    <Name>sender_full_name</Name>
+                    <Type>varchar(100)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc49">
+                    <Name>recipient_id</Name>
+                    <Type>int</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc50">
+                    <Name>recipient_full_name</Name>
+                    <Type>varchar(100)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc51">
+                    <Name>subject</Name>
+                    <Type>varchar(100)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc52">
+                    <Name>content</Name>
+                    <Type>varchar(1000)</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+                <ViewColumn Id="vc53">
+                    <Name>insert_ts</Name>
+                    <Type>timestamp</Type>
+                    <Description></Description>
+                    <Properties/>
+                </ViewColumn>
+            </ViewColumns>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </View>
+    </Views>
+    <References>
+        <Reference Id="r1">
+            <Name>users_connection_1</Name>
+            <Description></Description>
+            <PKTable>t1</PKTable>
+            <FKTable>t2</FKTable>
+            <PKRole></PKRole>
+            <FKRole></FKRole>
+            <ReferenceColumns>
+                <ReferenceColumn>
+                    <PKColumn>c1</PKColumn>
+                    <FKColumn>c5</FKColumn>
+                </ReferenceColumn>
+            </ReferenceColumns>
+            <Cardinality>0..*</Cardinality>
+            <Mandatory>true</Mandatory>
+            <OnUpdateAction>None</OnUpdateAction>
+            <OnDeleteAction>None</OnDeleteAction>
+            <Properties/>
+        </Reference>
+        <Reference Id="r2">
+            <Name>users_connection_2</Name>
+            <Description></Description>
+            <PKTable>t1</PKTable>
+            <FKTable>t2</FKTable>
+            <PKRole></PKRole>
+            <FKRole></FKRole>
+            <ReferenceColumns>
+                <ReferenceColumn>
+                    <PKColumn>c1</PKColumn>
+                    <FKColumn>c6</FKColumn>
+                </ReferenceColumn>
+            </ReferenceColumns>
+            <Cardinality>0..*</Cardinality>
+            <Mandatory>true</Mandatory>
+            <OnUpdateAction>None</OnUpdateAction>
+            <OnDeleteAction>None</OnDeleteAction>
+            <Properties/>
+        </Reference>
+        <Reference Id="r3">
+            <Name>private_message_sender</Name>
+            <Description></Description>
+            <PKTable>t1</PKTable>
+            <FKTable>t3</FKTable>
+            <PKRole></PKRole>
+            <FKRole></FKRole>
+            <ReferenceColumns>
+                <ReferenceColumn>
+                    <PKColumn>c1</PKColumn>
+                    <FKColumn>c9</FKColumn>
+                </ReferenceColumn>
+            </ReferenceColumns>
+            <Cardinality>0..*</Cardinality>
+            <Mandatory>true</Mandatory>
+            <OnUpdateAction>None</OnUpdateAction>
+            <OnDeleteAction>None</OnDeleteAction>
+            <Properties/>
+        </Reference>
+        <Reference Id="r4">
+            <Name>private_message_receiver</Name>
+            <Description></Description>
+            <PKTable>t1</PKTable>
+            <FKTable>t3</FKTable>
+            <PKRole></PKRole>
+            <FKRole></FKRole>
+            <ReferenceColumns>
+                <ReferenceColumn>
+                    <PKColumn>c1</PKColumn>
+                    <FKColumn>c10</FKColumn>
+                </ReferenceColumn>
+            </ReferenceColumns>
+            <Cardinality>0..*</Cardinality>
+            <Mandatory>true</Mandatory>
+            <OnUpdateAction>None</OnUpdateAction>
+            <OnDeleteAction>None</OnDeleteAction>
+            <Properties/>
+        </Reference>
+        <Reference Id="r5">
+            <Name>post_message_user_account</Name>
+            <Description></Description>
+            <PKTable>t1</PKTable>
+            <FKTable>t4</FKTable>
+            <PKRole></PKRole>
+            <FKRole></FKRole>
+            <ReferenceColumns>
+                <ReferenceColumn>
+                    <PKColumn>c1</PKColumn>
+                    <FKColumn>c13</FKColumn>
+                </ReferenceColumn>
+            </ReferenceColumns>
+            <Cardinality>0..*</Cardinality>
+            <Mandatory>true</Mandatory>
+            <OnUpdateAction>None</OnUpdateAction>
+            <OnDeleteAction>None</OnDeleteAction>
+            <Properties/>
+        </Reference>
+    </References>
+    <Sequences>
+        <Sequence Id="s1">
+            <Name>user_account_seq</Name>
+            <Description></Description>
+            <StartWith>1000</StartWith>
+            <IncrementBy>1</IncrementBy>
+            <MinValue></MinValue>
+            <HasMinValue>false</HasMinValue>
+            <MaxValue></MaxValue>
+            <HasMaxValue>false</HasMaxValue>
+            <Cycle>false</Cycle>
+            <Cache></Cache>
+            <HasCache>false</HasCache>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Sequence>
+        <Sequence Id="s3">
+            <Name>post_message_seq</Name>
+            <Description></Description>
+            <StartWith>1000</StartWith>
+            <IncrementBy>1</IncrementBy>
+            <MinValue></MinValue>
+            <HasMinValue>false</HasMinValue>
+            <MaxValue></MaxValue>
+            <HasMaxValue>false</HasMaxValue>
+            <Cycle>false</Cycle>
+            <Cache></Cache>
+            <HasCache>false</HasCache>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Sequence>
+        <Sequence Id="s4">
+            <Name>private_message_seq</Name>
+            <Description></Description>
+            <StartWith>1000</StartWith>
+            <IncrementBy>1</IncrementBy>
+            <MinValue></MinValue>
+            <HasMinValue>false</HasMinValue>
+            <MaxValue></MaxValue>
+            <HasMaxValue>false</HasMaxValue>
+            <Cycle>false</Cycle>
+            <Cache></Cache>
+            <HasCache>false</HasCache>
+            <AdditionalSQLBefore></AdditionalSQLBefore>
+            <AdditionalSQLAfter></AdditionalSQLAfter>
+            <Properties/>
+        </Sequence>
+    </Sequences>
+    <Notes/>
+    <Areas/>
+    <Texts/>
+    <TableDisplays>
+        <TableDisplay Id="td1">
+            <X>4864.5</X>
+            <Y>4858.5</Y>
+            <Width>167.0</Width>
+            <Height>102.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#ffffff</FillColor>
+            <Table>t1</Table>
+            <FixedSize>false</FixedSize>
+        </TableDisplay>
+        <TableDisplay Id="td2">
+            <X>5135.5</X>
+            <Y>4882.5</Y>
+            <Width>173.0</Width>
+            <Height>60.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#ffffff</FillColor>
+            <Table>t2</Table>
+            <FixedSize>false</FixedSize>
+        </TableDisplay>
+        <TableDisplay Id="td3">
+            <X>4624.5</X>
+            <Y>5045.5</Y>
+            <Width>177.0</Width>
+            <Height>116.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#ffffff</FillColor>
+            <Table>t3</Table>
+            <FixedSize>false</FixedSize>
+        </TableDisplay>
+        <TableDisplay Id="td4">
+            <X>4847.5</X>
+            <Y>5045.5</Y>
+            <Width>203.0</Width>
+            <Height>87.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#ffffff</FillColor>
+            <Table>t4</Table>
+            <FixedSize>false</FixedSize>
+        </TableDisplay>
+    </TableDisplays>
+    <ViewDisplays>
+        <ViewDisplay Id="vd1">
+            <X>5108.5</X>
+            <Y>5254.5</Y>
+            <Width>206.0</Width>
+            <Height>140.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#C9DAF8</FillColor>
+            <FixedSize>false</FixedSize>
+            <View>v1</View>
+        </ViewDisplay>
+        <ViewDisplay Id="vd2">
+            <X>4840.5</X>
+            <Y>5254.5</Y>
+            <Width>232.0</Width>
+            <Height>93.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#C9DAF8</FillColor>
+            <FixedSize>false</FixedSize>
+            <View>v2</View>
+        </ViewDisplay>
+        <ViewDisplay Id="vd4">
+            <X>4605.5</X>
+            <Y>5254.5</Y>
+            <Width>198.0</Width>
+            <Height>165.0</Height>
+            <LineColor>#000000</LineColor>
+            <FillColor>#C9DAF8</FillColor>
+            <FixedSize>false</FixedSize>
+            <View>v4</View>
+        </ViewDisplay>
+    </ViewDisplays>
+    <ReferenceDisplays>
+        <ReferenceDisplay Id="rd1">
+            <Color>#000000</Color>
+            <ControlPointsType>Horizontal_2CP</ControlPointsType>
+            <ControlPoint>
+                <X>5005.5</X>
+                <Y>4901.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>5185.5</X>
+                <Y>4901.5</Y>
+            </ControlPoint>
+            <PkTableDisplay>td1</PkTableDisplay>
+            <FkTableDisplay>td2</FkTableDisplay>
+            <Reference>r1</Reference>
+        </ReferenceDisplay>
+        <ReferenceDisplay Id="rd2">
+            <Color>#000000</Color>
+            <ControlPointsType>Horizontal_2CP</ControlPointsType>
+            <ControlPoint>
+                <X>4997.5</X>
+                <Y>4923.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>5145.5</X>
+                <Y>4923.5</Y>
+            </ControlPoint>
+            <PkTableDisplay>td1</PkTableDisplay>
+            <FkTableDisplay>td2</FkTableDisplay>
+            <Reference>r2</Reference>
+        </ReferenceDisplay>
+        <ReferenceDisplay Id="rd3">
+            <Color>#000000</Color>
+            <ControlPointsType>Cross_3CP</ControlPointsType>
+            <ControlPoint>
+                <X>4874.5</X>
+                <Y>4899.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>4690.5</X>
+                <Y>4899.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>4690.5</X>
+                <Y>5055.5</Y>
+            </ControlPoint>
+            <PkTableDisplay>td1</PkTableDisplay>
+            <FkTableDisplay>td3</FkTableDisplay>
+            <Reference>r3</Reference>
+        </ReferenceDisplay>
+        <ReferenceDisplay Id="rd4">
+            <Color>#000000</Color>
+            <ControlPointsType>Cross_3CP</ControlPointsType>
+            <ControlPoint>
+                <X>4874.5</X>
+                <Y>4922.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>4715.5</X>
+                <Y>4922.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>4715.5</X>
+                <Y>5055.5</Y>
+            </ControlPoint>
+            <PkTableDisplay>td1</PkTableDisplay>
+            <FkTableDisplay>td3</FkTableDisplay>
+            <Reference>r4</Reference>
+        </ReferenceDisplay>
+        <ReferenceDisplay Id="rd5">
+            <Color>#000000</Color>
+            <ControlPointsType>Vertical_2CP</ControlPointsType>
+            <ControlPoint>
+                <X>4949.5</X>
+                <Y>4929.5</Y>
+            </ControlPoint>
+            <ControlPoint>
+                <X>4949.5</X>
+                <Y>5055.5</Y>
+            </ControlPoint>
+            <PkTableDisplay>td1</PkTableDisplay>
+            <FkTableDisplay>td4</FkTableDisplay>
+            <Reference>r5</Reference>
+        </ReferenceDisplay>
+    </ReferenceDisplays>
+    <Properties/>
+</DatabaseModel>
